@@ -336,6 +336,43 @@
 
     /* ===== RSVP FORM ===== */
 
+    /* ===== POLAROID PHOTOS ===== */
+    .polaroid-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 20px 0 16px;
+      opacity: 0; transform: translateY(16px);
+      transition: all 0.8s ease;
+    }
+    .polaroid-row.in { opacity: 1; transform: translateY(0); }
+    .polaroid {
+      background: #fff;
+      padding: 6px 6px 22px;
+      border-radius: 3px;
+      box-shadow: 0 4px 16px rgba(60,30,10,0.12), 0 1px 4px rgba(0,0,0,0.06);
+      transition: transform 0.4s ease;
+    }
+    .polaroid:hover { transform: rotate(0deg) scale(1.05) !important; z-index: 2; }
+    .polaroid-img {
+      width: clamp(80px, 22vw, 130px);
+      height: clamp(80px, 22vw, 130px);
+      overflow: hidden;
+      border-radius: 2px;
+      background: #f5e8d8;
+    }
+    .polaroid-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    @media (max-width: 480px) {
+      .polaroid-row { gap: 8px; }
+      .polaroid { padding: 4px 4px 16px; }
+    }
+
     /* Slide 5 in-card — children use .in class animation normally */
 
     /* Score on s5 — not used anymore, cleaned up */
@@ -547,6 +584,19 @@
       <div id="s4inner" style="text-align:center;padding:28px 28px 32px">
         <div class="score-badge" id="scoreBadge"></div>
         <p class="score-msg" id="scoreMsg"></p>
+
+        <div class="polaroid-row" id="photoRow">
+          <div class="polaroid" style="transform:rotate(-7deg)">
+            <div class="polaroid-img"><img src="images/photo1.jpg" alt="Photo 1" /></div>
+          </div>
+          <div class="polaroid" style="transform:rotate(4deg); margin-top:-8px;">
+            <div class="polaroid-img"><img src="images/photo2.jpg" alt="Photo 2" /></div>
+          </div>
+          <div class="polaroid" style="transform:rotate(-4deg); margin-top:4px;">
+            <div class="polaroid-img"><img src="images/photo3.jpg" alt="Photo 3" /></div>
+          </div>
+        </div>
+
         <p class="photo-caption" id="photoCaption">Let&#39;s see if you saw this one coming</p>
       </div>
     </div><!-- /s4 -->
@@ -590,7 +640,7 @@
         <div id="rsvpForm" style="display:none; margin-top:28px; text-align:center;">
           <div class="rsvp-field">
             <label class="rsvp-label" for="guestName">Your Name</label>
-            <input type="text" id="guestName" class="rsvp-input" placeholder="e.g. Priya Sharma" required />
+            <input type="text" id="guestName" class="rsvp-input" placeholder="e.g. Mira Nair" required />
           </div>
           <div class="rsvp-field">
             <label class="rsvp-label" for="guestCount">Number of Guests (including you)</label>
@@ -667,7 +717,13 @@
       container.appendChild(d);
     }
     const counter = document.getElementById('slide-counter');
-    counter.textContent = current === 0 ? 'A & S · WEDDING 2026' : current + ' / ' + (TOTAL - 1);
+    if (current === 0) {
+      counter.textContent = '';
+      container.style.display = 'none';
+    } else {
+      container.style.display = 'flex';
+      counter.textContent = current + ' / ' + (TOTAL - 1);
+    }
   }
 
   // --- Body bg ---
@@ -715,9 +771,10 @@
       document.getElementById('scoreMsg').textContent = msgs.find(m => m.s === score)?.text || '';
       setTimeout(() => addIn('scoreBadge'), 400);
       setTimeout(() => addIn('scoreMsg'), 900);
-      setTimeout(() => addIn('photoCaption'), 1800);
-      // Auto-advance to Save the Date after 4 seconds
-      setTimeout(() => goTo(5), 4000);
+      setTimeout(() => addIn('photoRow'), 1500);
+      setTimeout(() => addIn('photoCaption'), 2200);
+      // Auto-advance to Save the Date after 6 seconds (more time to see photos)
+      setTimeout(() => goTo(5), 6000);
     }
     if (n === 5) {
       setTimeout(() => addIn('saveLabel'), 400);
@@ -796,7 +853,7 @@
 
   // --- RSVP ---
   // !! REPLACE this URL with your deployed Google Apps Script URL !!
-  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx-DRSEPNsVCK97_WnId13u8plUVeA9snbbwwPSIkuwZAEA6qwgj9GxjNiH7zG5JdfXIg/exec';
+  const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
 
   function rsvpRespond(choice) {
     const yesBtn = document.getElementById('rsvpYes');
