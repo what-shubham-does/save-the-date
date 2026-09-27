@@ -866,6 +866,203 @@ footer {
   .venue-block { padding: 28px 24px; }
   .vmr-label { min-width: 72px; }
 }
+
+
+/* ═══════════════════════════════════
+   ANIMATIONS
+   Slow, elegant reveals. Respects
+   prefers-reduced-motion.
+   ═══════════════════════════════════ */
+
+/* Fade + gentle lift for on-scroll reveals */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Staggered children (event rows, cards) */
+.reveal.in-view.stagger > * {
+  animation: fadeSlideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.reveal.in-view.stagger > *:nth-child(1) { animation-delay: 0.05s; }
+.reveal.in-view.stagger > *:nth-child(2) { animation-delay: 0.15s; }
+.reveal.in-view.stagger > *:nth-child(3) { animation-delay: 0.25s; }
+.reveal.in-view.stagger > *:nth-child(4) { animation-delay: 0.35s; }
+.reveal.in-view.stagger > *:nth-child(5) { animation-delay: 0.45s; }
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* HERO: cinematic entrance sequence */
+.invite-text > * {
+  opacity: 0;
+  animation: heroReveal 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.invite-names           { animation-delay: 0.35s; }
+.invite-rule            { animation-delay: 0.75s; }
+.invite-message         { animation-delay: 0.95s; }
+.invite-dates-simple    { animation-delay: 1.20s; }
+
+@keyframes heroReveal {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Nav: slide down on load */
+nav {
+  animation: navDrop 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes navDrop {
+  from { opacity: 0; transform: translateY(-100%); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Nav link underline sweep */
+.nav-links a {
+  position: relative;
+  padding-bottom: 4px;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nav-links a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Card hover lift — transport & eat */
+.transport-card, .eat-item {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.transport-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(196,88,58,0.08);
+  z-index: 1;
+  position: relative;
+}
+.eat-item:hover .eat-dot {
+  transform: scale(1.5);
+  background: var(--terra);
+}
+.eat-dot {
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+/* Event row hover — subtle highlight */
+.event-row {
+  transition: background 0.3s ease;
+}
+.event-row:hover {
+  background: rgba(232,201,138,0.06);
+}
+.event-num-circle {
+  transition: border-color 0.3s ease, color 0.3s ease, transform 0.4s ease;
+}
+.event-row:hover .event-num-circle {
+  border-color: var(--terra);
+  color: var(--terra);
+  transform: rotate(360deg);
+}
+
+/* RSVP button: gentle pulse-glow at rest, elegant lift on hover */
+.rsvp-btn {
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.3s;
+  animation: subtlePulse 3.5s ease-in-out infinite;
+}
+@keyframes subtlePulse {
+  0%, 100% { box-shadow: 0 8px 32px rgba(196,88,58,0.28); }
+  50%      { box-shadow: 0 8px 40px rgba(196,88,58,0.42); }
+}
+.rsvp-btn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 44px rgba(196,88,58,0.38);
+  animation: none;
+}
+
+/* Place items — soft slide on hover */
+.place {
+  transition: padding-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.place:hover {
+  padding-left: 12px;
+}
+.place-km {
+  transition: color 0.3s ease, transform 0.4s ease;
+}
+.place:hover .place-km {
+  color: var(--ink);
+  transform: scale(1.08);
+}
+
+/* Modal entrance */
+.modal-overlay.open {
+  animation: overlayFade 0.35s ease-out;
+}
+.modal-overlay.open .modal {
+  animation: modalRise 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes overlayFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes modalRise {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Mobile menu items stagger */
+.mobile-menu.open ul li {
+  opacity: 0;
+  animation: menuItem 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.mobile-menu.open ul li:nth-child(1) { animation-delay: 0.10s; }
+.mobile-menu.open ul li:nth-child(2) { animation-delay: 0.16s; }
+.mobile-menu.open ul li:nth-child(3) { animation-delay: 0.22s; }
+.mobile-menu.open ul li:nth-child(4) { animation-delay: 0.28s; }
+.mobile-menu.open ul li:nth-child(5) { animation-delay: 0.34s; }
+@keyframes menuItem {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Section labels — the little "01 ·" tags shimmer in */
+.section-label, .section-eyebrow, .guide-chapter-eyebrow, .closing-eyebrow {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Respect motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  .invite-text > * { opacity: 1; }
+}
+
 </style>
 </head>
 <body>
@@ -924,9 +1121,9 @@ footer {
       <span class="section-eyebrow">Join us for</span>
       <div class="rule-line"></div>
     </div>
-    <h1>The Celebrations</h1>
+    <h1 class="reveal">The Celebrations</h1>
 
-    <div class="event-rows">
+    <div class="event-rows reveal stagger">
       <div class="event-row">
         <div class="event-num-circle">i</div>
         <div>
@@ -976,11 +1173,11 @@ footer {
       </div>
     </div>
 
-    <div class="rsvp-wrap">
+    <div class="rsvp-wrap reveal">
       <button class="rsvp-btn" onclick="openRsvp()">RSVP &nbsp;✦</button>
     </div>
 
-    <div class="celebrations-note">
+    <div class="celebrations-note reveal">
       <p><strong>A note on the day:</strong> The wedding begins with traditional Hindu rituals — please be seated a few minutes before the 9:45 AM muhurat. All events are within the Mahalasa Narayani Temple complex.</p>
       <p><strong>What to wear:</strong> No strict dress code — come in whatever makes you feel wonderful. If you'd like a suggestion, traditional Indian wear like sarees, salwar suits, sherwanis, or kurta-pyjamas will feel right at home in the temple setting. We'd gently suggest steering clear of white and black.</p>
     </div>
@@ -1046,7 +1243,7 @@ footer {
      with deepstambh illustration as sticky background watermark ══════ -->
 <div class="guide-wrapper">
 <div class="guide-chapter">
-    <div class="guide-chapter-inner">
+    <div class="guide-chapter-inner reveal">
       <p class="guide-chapter-eyebrow">What follows</p>
       <h1>A little guide<br>to Goa</h1>
       <p class="guide-chapter-sub">Everything you need to find us, get around, and make the most of your time here.</p>
@@ -1060,8 +1257,8 @@ footer {
   <!-- VENUE -->
   <section class="section" id="venue">
     <p class="section-label">01 · The Venue</p>
-    <h2 class="h2">Where you need to be</h2>
-    <div class="venue-block">
+    <h2 class="h2 reveal">Where you need to be</h2>
+    <div class="venue-block reveal">
       <h3 class="h3 venue-name">Sinhapurush Hall</h3>
       <div class="venue-sub">Shri Mahalasa Narayani Temple · Mardol, Goa</div>
       <div class="venue-meta">
@@ -1089,8 +1286,8 @@ footer {
   <!-- GETTING HERE -->
   <section class="section" id="getting-here">
     <p class="section-label">02 · Getting Here</p>
-    <h2 class="h2">Finding your way <em>to Mardol</em></h2>
-    <div class="transport-grid">
+    <h2 class="h2 reveal">Finding your way <em>to Mardol</em></h2>
+    <div class="transport-grid reveal stagger">
       <div class="transport-card"><div class="transport-card-icon">✈️</div><h3 class="h3">By Air</h3><div class="transport-card-sub">Two airports serve Goa</div><p><strong>Dabolim (GOI)</strong> is the closest — ~30 km, ~45 min. Pre-paid taxis have fixed rates.<br><br><strong>Mopa (GOX)</strong> is newer and further (~65 km). Good if spending days up north first.</p></div>
       <div class="transport-card"><div class="transport-card-icon">🚂</div><h3 class="h3">By Train</h3><div class="transport-card-sub">Konkan Railway</div><p><strong>Karmali</strong> (Old Goa) is nearest, ~18 km. Taxi or auto from there.<br><br><strong>Margao</strong> and <strong>Vasco da Gama</strong> have more connections — both ~25–35 km away.</p></div>
       <div class="transport-card"><div class="transport-card-icon">🚗</div><h3 class="h3">By Road</h3><div class="transport-card-sub">Self-drive or hired car</div><p>Mardol sits on NH 4A — well-signposted and GPS-friendly. Use the Maps links in the venue section above.<br><br>Driving from Mumbai or Pune? NH 66 along the coast is genuinely beautiful.</p></div>
@@ -1103,9 +1300,9 @@ footer {
   <!-- GETTING AROUND -->
   <section class="section">
     <p class="section-label">03 · Getting Around</p>
-    <h2 class="h2">Moving around <em>Goa</em></h2>
+    <h2 class="h2 reveal">Moving around <em>Goa</em></h2>
     <p>A quick honest word: Goa doesn't have a metro or reliable ride-hailing apps. But it has character — and several perfectly workable ways to get around.</p>
-    <table class="around-table">
+    <table class="around-table reveal">
       <tr class="row-recommended"><td class="mode-col">Rental cars</td><td class="tag-col"><span class="mode-tag mode-tag-recommended">★ Recommended</span></td><td>The most convenient way to explore Goa on your own schedule. Local operators like Zoomcar, Myles, and small agencies in Ponda and Panaji offer self-drive hatchbacks and SUVs from ₹1,500–3,000/day. Carry your licence and book a day or two ahead — December fills up fast.</td></tr>
       <tr><td class="mode-col">Taxis</td><td class="tag-col"><span class="mode-tag">Most comfortable</span></td><td>Always fix the fare before you set off — taxis don't use meters. Airport pre-paid taxis have printed fixed rates; use these on arrival.</td></tr>
       <tr><td class="mode-col">Scooter rental</td><td class="tag-col"><span class="mode-tag">Most freedom</span></td><td>The classic Goa move. ₹300–500/day. Carry your licence, inspect the bike for scratches, and always wear a helmet — NH 4A moves fast.</td></tr>
@@ -1120,7 +1317,7 @@ footer {
   <!-- EXPLORE -->
   <section class="section" id="explore">
     <p class="section-label">04 · Explore</p>
-    <h2 class="h2">Things to do <em>in Goa</em></h2>
+    <h2 class="h2 reveal">Things to do <em>in Goa</em></h2>
     <p>Whether you're here for a day or a week, Goa has many faces. Here are some worth seeking out.</p>
     <div class="section-subhead">Right around the venue</div>
     <div class="place"><div class="place-dist"><div class="place-km">—</div><div class="place-unit">On-site</div></div><div><div class="place-tag">Temple</div><h3 class="h3">Shri Mahalasa Narayani Temple</h3><p>The temple you'll be celebrating in. A 450-year-old sanctuary dedicated to Goddess Mahalasa. Walk through at your own pace — the deepstambha and inner mandapa are especially beautiful.</p></div></div>
@@ -1137,14 +1334,14 @@ footer {
   <!-- EAT -->
   <section class="section" id="eat">
     <p class="section-label">05 · Eat</p>
-    <h2 class="h2">Where to eat <em>well</em></h2>
+    <h2 class="h2 reveal">Where to eat <em>well</em></h2>
     <p>Goan food is its own reason to visit. Don't leave without a proper fish curry-rice thali, and save room for bebinca.</p>
-    <div style="margin-top:32px;">
+    <div style="margin-top:32px;" class="reveal stagger">
       <div class="eat-item"><div class="eat-dot"></div><div><h3 class="h3">Tilve Bhojanalay</h3><div class="eat-tags"><span class="eat-tag">Authentic Goan</span><span class="eat-tag">Seafood Thali</span><span class="eat-tag">Budget</span></div><p>No-frills, homestyle, outstanding value. Famous for Pomfret Rava Fry and an affordable seafood thali.</p></div></div>
       <div class="eat-item"><div class="eat-dot"></div><div><h3 class="h3">Cafe Krupa, Ponda</h3><div class="eat-tags"><span class="eat-tag">Snacks &amp; Breakfast</span><span class="eat-tag">Local Favourite</span><span class="eat-tag">Budget</span></div><p>A neighbourhood spot with a devoted following. Their mangalore buns and Goan samosas are outstanding — perfect for a quick, satisfying stop.</p></div></div>
       <div class="eat-item"><div class="eat-dot"></div><div><h3 class="h3">Savor Restaurant &amp; Bar</h3><div class="eat-tags"><span class="eat-tag">Goan &amp; Seafood</span><span class="eat-tag">Near the Temple</span><span class="eat-tag">Mid-range</span></div><p>A local favourite for post-temple lunches. Try the Mackerel Rechado Masala or Prawns Curry Rice. Open from 12:30 pm.</p></div></div>
     </div>
-    <div class="food-note">
+    <div class="food-note reveal">
       <h3 class="h3">A brief guide to Goan cuisine</h3>
       <p>Look out for: <strong>Fish Curry Rice</strong> (the everyday staple), <strong>Prawn Balchão</strong> (fiery and pickled), <strong>Chicken Xacuti</strong> (complex coconut-and-spice curry), and <strong>Bebinca</strong> — a layered coconut-milk dessert. Order it wherever you see it.</p>
     </div>
@@ -1156,10 +1353,10 @@ footer {
 <!-- ══════ CLOSING ══════ -->
 <div class="closing">
   <p class="closing-eyebrow">With love</p>
-  <h1>See you in Goa.</h1>
+  <h1 class="reveal">See you in Goa.</h1>
   <p>Thank you for making the journey. Your presence is what makes a wedding real — not the flowers or the fire or the vows, but the people who showed up.</p>
   <p><em>Please remember... ye Goa trip cancel nahi honi chahiye.</em></p>
-  <span class="closing-names">Anmol &amp; Shubham</span>
+  <span class="closing-names reveal">Anmol &amp; Shubham</span>
 </div>
 
 <footer>A &amp; S · Wedding 2026 · as-we-begin.online</footer>
@@ -1199,7 +1396,7 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closeRsvp(); closeMenu(); }
 });
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxVbp3P-IAnD6Iy8WpDvpgAmeiMZSdSMg4EpXzDWbV03jRwDupTlYWD7lckV4N7PEuM/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx-DRSEPNsVCK97_WnId13u8plUVeA9snbbwwPSIkuwZAEA6qwgj9GxjNiH7zG5JdfXIg/exec';
 
 function submitRsvp() {
   const name = document.getElementById('rsvpName').value.trim();
@@ -1242,6 +1439,30 @@ function submitRsvp() {
     btn.disabled = false; btn.textContent = 'Send RSVP';
   });
 }
+
+// ═════════════════════════════════════════════════════
+// SCROLL-TRIGGERED ANIMATIONS
+// Adds .in-view when element enters viewport
+// ═════════════════════════════════════════════════════
+(function() {
+  if (!('IntersectionObserver' in window)) {
+    // Fallback: reveal everything immediately
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
+    return;
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
+
 </script>
 </body>
 </html>
