@@ -572,22 +572,44 @@ a:hover { color: var(--ink); }
   color: var(--gold-muted);
   margin-bottom: 24px;
 }
-.venue-meta { display: flex; flex-direction: column; gap: 14px; }
-.venue-meta-row { display: flex; gap: 16px; }
+.venue-meta { display: flex; flex-direction: column; gap: 16px; }
+/* Grid guarantees the label column and value column always align */
+.venue-meta-row {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  align-items: baseline;
+  gap: 20px;
+}
 .vmr-label {
   font-family: var(--sans);
   font-size: 10px; letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--terra);
-  min-width: 84px;
-  padding-top: 2px;
-  flex-shrink: 0;
+  line-height: 1.6;              /* match value baseline */
 }
-.vmr-value { font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
-.contact-row { display: flex; gap: 14px; }
+.vmr-value {
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.vmr-value br { line-height: 1.6; }
+
+/* Contact rows use grid too so names and numbers align cleanly */
+.contact-list {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 6px 12px;
+  align-items: baseline;
+}
 .contact-name {
-  font-family: var(--sans); font-size: 13px;
-  color: var(--ink); min-width: 62px;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink);
+}
+.contact-number {
+  font-size: 14px;
+  color: var(--ink-soft);
+  font-family: var(--body);
 }
 
 /* Getting Here cards */
@@ -862,9 +884,43 @@ footer {
 
   .page-content { padding: 56px 24px 64px; }
   .transport-grid { grid-template-columns: 1fr; }
+  /* Hide the separate tag column and render each row's tag
+     inline below its mode name using data-tag attribute */
   .around-table .tag-col { display: none; }
+  .around-table .mode-col {
+    display: block;
+    padding-bottom: 6px;
+  }
+  .around-table .mode-col::after {
+    content: attr(data-tag);
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--teal-light);
+    color: var(--teal);
+    padding: 3px 10px;
+    margin-top: 10px;
+    margin-left: 0;
+    font-style: normal;         /* override the italic serif */
+    font-weight: 400;
+    vertical-align: middle;
+  }
+  /* Recommended row gets the terracotta filled tag */
+  .around-table .mode-col[data-recommended]::after {
+    background: var(--terra);
+    color: #fdf6ee;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+  }
+  /* On mobile, make the mode name + tag layout cleaner */
+  .around-table tr td:last-child {
+    padding-top: 8px;
+  }
   .venue-block { padding: 28px 24px; }
-  .vmr-label { min-width: 72px; }
+  .venue-meta-row { grid-template-columns: 88px 1fr; gap: 16px; }
+  .contact-list { grid-template-columns: 68px 1fr; }
 }
 
 
@@ -1268,10 +1324,10 @@ nav {
         <div class="venue-meta-row"><span class="vmr-label">Nearest Stn.</span><span class="vmr-value">Karmali (Old Goa) · ~18 km</span></div>
         <div class="venue-meta-row"><span class="vmr-label">Maps</span><span class="vmr-value"><a href="https://maps.app.goo.gl/4DxxoLR7xmNw1RdP9" target="_blank" rel="noopener">Shree Mahalasa Hall ↗</a><br><a href="https://maps.app.goo.gl/vbErF1uUthTJ6DX18" target="_blank" rel="noopener">Sinhapurush Hall ↗</a></span></div>
         <div class="venue-meta-row"><span class="vmr-label">Contact</span><span class="vmr-value">
-          <div style="display:flex;flex-direction:column;gap:6px;">
-            <div class="contact-row"><span class="contact-name">Omkar</span><a href="tel:+918762446839" style="font-size:14px;color:var(--ink-soft);">+91 87624 46839</a></div>
-            <div class="contact-row"><span class="contact-name">Kalyani</span><a href="tel:+919561871627" style="font-size:14px;color:var(--ink-soft);">+91 95618 71627</a></div>
-            <div class="contact-row"><span class="contact-name">Konica</span><a href="tel:+919873475521" style="font-size:14px;color:var(--ink-soft);">+91 98734 75521</a></div>
+          <div class="contact-list">
+            <span class="contact-name">Omkar</span><a class="contact-number" href="tel:+918762446839">+91 87624 46839</a>
+            <span class="contact-name">Kalyani</span><a class="contact-number" href="tel:+919561871627">+91 95618 71627</a>
+            <span class="contact-name">Konica</span><a class="contact-number" href="tel:+919873475521">+91 98734 75521</a>
           </div>
         </span></div>
       </div>
@@ -1303,11 +1359,11 @@ nav {
     <h2 class="h2 reveal">Moving around <em>Goa</em></h2>
     <p>A quick honest word: Goa doesn't have a metro or reliable ride-hailing apps. But it has character — and several perfectly workable ways to get around.</p>
     <table class="around-table reveal">
-      <tr class="row-recommended"><td class="mode-col">Rental cars</td><td class="tag-col"><span class="mode-tag mode-tag-recommended">★ Recommended</span></td><td>The most convenient way to explore Goa on your own schedule. Local operators like Zoomcar, Myles, and small agencies in Ponda and Panaji offer self-drive hatchbacks and SUVs from ₹1,500–3,000/day. Carry your licence and book a day or two ahead — December fills up fast.</td></tr>
-      <tr><td class="mode-col">Taxis</td><td class="tag-col"><span class="mode-tag">Most comfortable</span></td><td>Always fix the fare before you set off — taxis don't use meters. Airport pre-paid taxis have printed fixed rates; use these on arrival.</td></tr>
-      <tr><td class="mode-col">Scooter rental</td><td class="tag-col"><span class="mode-tag">Most freedom</span></td><td>The classic Goa move. ₹300–500/day. Carry your licence, inspect the bike for scratches, and always wear a helmet — NH 4A moves fast.</td></tr>
-      <tr><td class="mode-col">KTC Buses</td><td class="tag-col"><span class="mode-tag">Budget</span></td><td>Kadamba Transport Corporation covers most major routes including Ponda. Tickets ₹10–15. Buses stop around 7 pm.</td></tr>
-      <tr><td class="mode-col">Auto-rickshaws</td><td class="tag-col"><span class="mode-tag">In-town hops</span></td><td>Yellow-and-black three-wheelers in Ponda town. Good for short distances. Fix the fare before you get in.</td></tr>
+      <tr class="row-recommended"><td class="mode-col" data-tag="★ Recommended" data-recommended>Rental cars</td><td class="tag-col"><span class="mode-tag mode-tag-recommended">★ Recommended</span></td><td>The most convenient way to explore Goa on your own schedule. Local operators like Zoomcar, Myles, and small agencies in Ponda and Panaji offer self-drive hatchbacks and SUVs from ₹1,500–3,000/day. Carry your licence and book a day or two ahead — December fills up fast.</td></tr>
+      <tr><td class="mode-col" data-tag="Most Comfortable">Taxis</td><td class="tag-col"><span class="mode-tag">Most comfortable</span></td><td>Always fix the fare before you set off — taxis don't use meters. Airport pre-paid taxis have printed fixed rates; use these on arrival.</td></tr>
+      <tr><td class="mode-col" data-tag="Most Freedom">Scooter rental</td><td class="tag-col"><span class="mode-tag">Most freedom</span></td><td>The classic Goa move. ₹300–500/day. Carry your licence, inspect the bike for scratches, and always wear a helmet — NH 4A moves fast.</td></tr>
+      <tr><td class="mode-col" data-tag="Budget">KTC Buses</td><td class="tag-col"><span class="mode-tag">Budget</span></td><td>Kadamba Transport Corporation covers most major routes including Ponda. Tickets ₹10–15. Buses stop around 7 pm.</td></tr>
+      <tr><td class="mode-col" data-tag="In-town Hops">Auto-rickshaws</td><td class="tag-col"><span class="mode-tag">In-town hops</span></td><td>Yellow-and-black three-wheelers in Ponda town. Good for short distances. Fix the fare before you get in.</td></tr>
     </table>
   </section>
 
