@@ -105,16 +105,16 @@ nav.scrolled .nav-links a:hover { color: var(--terra); }
 }
 .nav-burger span {
   display: block; width: 100%; height: 2px;
-  background: var(--ink);
+  background: rgba(253,248,242,0.75);          /* soft cream — gentle on terracotta hero */
   border-radius: 2px;
-  box-shadow: 0 0 0 1px rgba(253,248,242,0.6);
-  transition: transform 0.3s, opacity 0.3s;
+  box-shadow: none;
+  transition: background 0.3s, transform 0.3s, opacity 0.3s, box-shadow 0.3s;
 }
 nav.scrolled .nav-burger span {
-  background: var(--ink);
+  background: var(--ink-soft);               /* muted brown — reads nicely on scrolled cream nav */
   box-shadow: none;
 }
-nav.scrolled .nav-burger span { background: var(--ink); }
+nav.scrolled .nav-burger span { background: var(--ink-soft); }
 .nav-burger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
 .nav-burger.open span:nth-child(2) { opacity: 0; }
 .nav-burger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
@@ -145,7 +145,7 @@ nav.scrolled .nav-burger span { background: var(--ink); }
    switch logo & burger to dark so they're visible */
 body:has(.mobile-menu.open) .nav-logo { color: var(--ink); }
 body:has(.mobile-menu.open) .nav-logo-amp { color: var(--terra); }
-body:has(.mobile-menu.open) .nav-burger span { background: var(--ink); }
+body:has(.mobile-menu.open) .nav-burger span { background: var(--ink-soft); }
 
 /* ═══════════════════════════════════
    HERO — INVITATION
@@ -846,6 +846,120 @@ footer {
 }
 
 /* ═══════════════════════════════════
+   STAYS SUBSECTION (inside Getting Here)
+   ═══════════════════════════════════ */
+.stay-subsection {
+  margin-top: 56px;
+}
+.stay-subhead {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+.stay-subhead-eyebrow {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--terra);
+  white-space: nowrap;
+}
+.stay-intro {
+  font-size: 14px;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin-bottom: 28px;
+  max-width: 640px;
+}
+
+/* Stays grid — 3 columns desktop, wraps down on smaller */
+.stay-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+.stay-card {
+  background: var(--parchment);
+  border: 1px solid var(--border);
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.stay-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(196,88,58,0.08);
+  z-index: 1;
+  position: relative;
+}
+.stay-dist {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.stay-km {
+  font-family: var(--serif);
+  font-size: 30px;
+  line-height: 1;
+  color: var(--terra);
+}
+.stay-unit {
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-muted);
+}
+.stay-name {
+  font-style: italic;
+  margin-bottom: 6px;
+}
+.stay-meta {
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 16px;
+}
+.stay-quote {
+  font-family: var(--body);
+  font-style: italic;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--ink);
+  padding-left: 14px;
+  border-left: 2px solid var(--gold);
+  margin: 4px 0 16px;
+}
+.stay-note {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.65;
+  flex: 1;
+  margin-bottom: 16px;
+}
+.stay-link {
+  align-self: flex-start;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--terra);
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: border-color 0.3s;
+}
+.stay-link:hover {
+  border-bottom-color: var(--terra);
+}
+
+/* ═══════════════════════════════════
    TABLET: 701–1100px
    ═══════════════════════════════════ */
 @media (min-width: 701px) and (max-width: 1100px) {
@@ -1137,119 +1251,6 @@ nav {
 
 
 
-/* ═══════════════════════════════════
-   STAYS SUBSECTION (inside Getting Here)
-   ═══════════════════════════════════ */
-.stay-subsection {
-  margin-top: 56px;
-}
-.stay-subhead {
-  display: flex;
-  align-items: baseline;
-  gap: 20px;
-  margin-bottom: 16px;
-}
-.stay-subhead-eyebrow {
-  font-family: var(--sans);
-  font-size: 11px;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  color: var(--terra);
-  white-space: nowrap;
-}
-.stay-intro {
-  font-size: 14px;
-  color: var(--ink-soft);
-  font-style: italic;
-  margin-bottom: 28px;
-  max-width: 640px;
-}
-
-/* Stays grid — 3 columns desktop, wraps down on smaller */
-.stay-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
-}
-.stay-card {
-  background: var(--parchment);
-  border: 1px solid var(--border);
-  padding: 32px 28px;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.stay-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(196,88,58,0.08);
-  z-index: 1;
-  position: relative;
-}
-.stay-dist {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  margin-bottom: 14px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
-}
-.stay-km {
-  font-family: var(--serif);
-  font-size: 30px;
-  line-height: 1;
-  color: var(--terra);
-}
-.stay-unit {
-  font-family: var(--sans);
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--gold-muted);
-}
-.stay-name {
-  font-style: italic;
-  margin-bottom: 6px;
-}
-.stay-meta {
-  font-family: var(--sans);
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  margin-bottom: 16px;
-}
-.stay-quote {
-  font-family: var(--body);
-  font-style: italic;
-  font-size: 13.5px;
-  line-height: 1.7;
-  color: var(--ink);
-  padding-left: 14px;
-  border-left: 2px solid var(--gold);
-  margin: 4px 0 16px;
-}
-.stay-note {
-  font-size: 13px;
-  color: var(--ink-soft);
-  line-height: 1.65;
-  flex: 1;
-  margin-bottom: 16px;
-}
-.stay-link {
-  align-self: flex-start;
-  font-family: var(--sans);
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--terra);
-  border-bottom: 1px solid transparent;
-  padding-bottom: 2px;
-  transition: border-color 0.3s;
-}
-.stay-link:hover {
-  border-bottom-color: var(--terra);
-}
 
 </style>
 </head>
